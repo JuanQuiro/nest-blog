@@ -1,7 +1,7 @@
 export enum UserType {
-  ADMIN = "admin",
-  EDITOR = "editor",
-  READER = "reader",
+  ADMIN = 'admin',
+  EDITOR = 'editor',
+  READER = 'reader',
 }
 
 export interface IUser extends Document {

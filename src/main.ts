@@ -10,7 +10,7 @@ async function bootstrap() {
   setupSwagger(app);
   setupGlobalPipes(app);
 
-  await app.listen(3000);
+  await app.listen(process.env.PORT || 3000);
 }
 
 function setupSwagger(app: INestApplication) {
@@ -21,7 +21,9 @@ function setupSwagger(app: INestApplication) {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('/docs', app, document, { swaggerOptions: { filter: true } });
+  SwaggerModule.setup('/docs', app, document, {
+    swaggerOptions: { filter: true },
+  });
 }
 
 function setupGlobalPipes(app: INestApplication) {
