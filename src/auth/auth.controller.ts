@@ -1,51 +1,22 @@
-import { Controller, Post, Body, Get, Param, Put, Delete, Req, UseGuards } from '@nestjs/common';
-import { UserDTO } from './dto/user.dto';
-import { AuthService } from './auth.service';
+import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { LocalAuthGuards } from './guards/jwt-auth.guards';
+import { UserDTO } from 'src/user/dto/user.dto';
+import { AuthService } from './auth.service';
+import { LocalAuthGuard } from './guards/local-auth.guard';
 
-@ApiTags('auth')
-@Controller('api/auth')
+@ApiTags('Authentication')
+@Controller('api/v1/auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) { }
+  constructor(private readonly authService: AuthService) {}
 
-  @Post('/create')
-  create(@Body() userDTO: UserDTO) {
-    return this.authService.create(userDTO);
-  }
-
-  @Get('/getAll')
-  findAll() {
-    return this.authService.findAll();
-  }
-
-  @Get('/getId/:id')
-  findOne(@Param('id') id: string) {
-    return this.authService.findOne(id);
-  }
-
-  @Put('/update/:id')
-  update(@Param('id') id: string, @Body() userDTO: UserDTO) {
-    return this.authService.update(id, userDTO);
-  }
-
-  @Delete('/delete/:id')
-  delete(@Param('id') id: string) {
-    return this.authService.delete(id);
-  }
-
-  @UseGuards(LocalAuthGuards)
-  @Post('/signin')
+  @UseGuards(LocalAuthGuard)
+  @Post('signin')
   async signIn(@Req() req) {
-    return this.authService.signIn(req.user);
+    return await this.authService.signIn(req.user);
   }
 
-  @Post('/signup')
+  @Post('signup')
   async signUp(@Body() userDTO: UserDTO) {
-    return this.authService.create(userDTO);
+    return await this.authService.signUp(userDTO);
   }
-
-
-
-
 }
